@@ -68,7 +68,7 @@ export default function NFCCard({
           <CreditCard size={20} color="rgba(255,255,255,0.8)" />
           <Text style={styles.statusText}>
             {isActive ? 'CARTE ACTIVE' : 'CARTE DÉSACTIVÉE'}
-          </Text>
+          </Text> 
         </View>
       </LinearGradient>
     </TouchableOpacity>

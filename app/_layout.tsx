@@ -10,14 +10,12 @@ SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
   useFrameworkReady();
-
   const [fontsLoaded, fontError] = useFonts({
     'Inter-Regular': Inter_400Regular,
     'Inter-SemiBold': Inter_600SemiBold,
     'Inter-Bold': Inter_700Bold,
     'RobotoMono-Regular': RobotoMono_400Regular,
   });
-
   useEffect(() => {
     if (fontsLoaded || fontError) {
       SplashScreen.hideAsync();

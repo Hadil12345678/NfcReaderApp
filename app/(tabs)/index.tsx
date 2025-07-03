@@ -4,37 +4,25 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { Plus, Eye, EyeOff, RefreshCw } from 'lucide-react-native';
 import NFCCard from '@/components/NFCCard';
 
-const mockCards = [
-  {
-    id: '1',
-    cardNumber: '4532123456789012',
-    holderName: 'Jean Dupont',
-    expiryDate: '12/26',
-    balance: 1234.56,
-    currency: 'EUR',
-    isActive: true,
-  },
-  {
-    id: '2',
-    cardNumber: '5555123456789001',
-    holderName: 'Jean Dupont',
-    expiryDate: '08/25',
-    balance: 567.89,
-    currency: 'EUR',
-    isActive: false,
-  },
-];
-
+// Only one card (RFID/NFC)
+const mockCard = {
+  id: '1',
+  cardNumber: '4532123456789012',
+  holderName: 'Hadil',
+  expiryDate: '12/26',
+  balance: 1234.56,
+  currency: 'TND',
+  isActive: true,
+};
 export default function HomeScreen() {
-  const [cards, setCards] = useState(mockCards);
+  const [card, setCard] = useState(mockCard);
   const [showBalance, setShowBalance] = useState(true);
 
-  const toggleCardStatus = (cardId: string) => {
-    setCards(prevCards =>
-      prevCards.map(card =>
-        card.id === cardId ? { ...card, isActive: !card.isActive } : card
-      )
-    );
+  const toggleCardStatus = () => {
+    setCard(prevCard => ({
+      ...prevCard,
+      isActive: !prevCard.isActive,
+    }));
   };
 
   const addNewCard = () => {
@@ -53,7 +41,7 @@ export default function HomeScreen() {
     );
   };
 
-  const totalBalance = cards.reduce((sum, card) => sum + card.balance, 0);
+  const totalBalance = card.balance;
 
   return (
     <SafeAreaView style={styles.container}>
@@ -80,7 +68,7 @@ export default function HomeScreen() {
           </View>
           <Text style={styles.totalBalance}>
             {showBalance ? 
-              totalBalance.toLocaleString('fr-FR', { style: 'currency', currency: 'EUR' }) :
+              totalBalance.toLocaleString('fr-FR', { style: 'currency', currency: 'TND' }) :
               '••••••'
             }
           </Text>
@@ -88,24 +76,21 @@ export default function HomeScreen() {
 
         <View style={styles.cardsSection}>
           <View style={styles.sectionHeader}>
-            <Text style={styles.sectionTitle}>Mes Cartes NFC</Text>
+            <Text style={styles.sectionTitle}>Ma Carte NFC</Text>
             <TouchableOpacity onPress={addNewCard} style={styles.addButton}>
               <Plus size={20} color="#1E40AF" />
             </TouchableOpacity>
           </View>
 
-          {cards.map((card) => (
-            <NFCCard
-              key={card.id}
-              cardNumber={card.cardNumber}
-              holderName={card.holderName}
-              expiryDate={card.expiryDate}
-              balance={card.balance}
-              currency={card.currency}
-              isActive={card.isActive}
-              onToggle={() => toggleCardStatus(card.id)}
-            />
-          ))}
+          <NFCCard
+            cardNumber={card.cardNumber}
+            holderName={card.holderName}
+            expiryDate={card.expiryDate}
+            balance={card.balance}
+            currency={card.currency}
+            isActive={card.isActive}
+            onToggle={toggleCardStatus}
+          />
         </View>
 
         <View style={styles.infoSection}>
